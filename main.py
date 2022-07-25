@@ -1,6 +1,5 @@
 import pickle
 import pandas as pd
-import training
 from flask import Flask,render_template,Response,request
 #from flask_cors import CORS,cross_origin
 import tuner
@@ -20,8 +19,6 @@ def submit():
          """
 df = pd.read_csv("D:\Ml Projects\placementprediction\data\data.csv")
 model1 = tuner.models(df)
-trainx,testx,trainy,testy = model1.final_processing(df)
+trainx,testx,trainy,testy  =  model1.driver(df)
 model1.best_model_finder(trainx,testx,trainy,testy)
 model1.final_model(60,50,60,90)
-
-

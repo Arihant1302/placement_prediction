@@ -14,10 +14,15 @@ class Presprocessor:
             furthert operations .
 
             '''
-    def __init__(self,data):
-        self.data = data
+    cwmv = []
+    ctv = []
 
-    def is_null_present(self,data):
+    def __init__(self,df):
+        self.df = df
+
+
+
+    def is_null(self,data):
         '''
                 Lets check if there are any null values in the dataset
     
@@ -27,28 +32,28 @@ class Presprocessor:
                 onFailure  : Raise exception.
                 
                 '''
-        self.data = data
-        self.cwmv = []
-        self.cols = self.data.columns
-        self.null_present = False
         try:
-            self.null_counts = self.data.isnull().sum()
+            self.cols = self.df.columns
+            self.null_present = False
+            self.null_counts = self.df.isnull().sum()
             for i in range(len(self.null_counts)):
                 if self.null_counts[i]>0:
                         self.null_present=True
                         self.cwmv.append(self.cols[i])
-            return self.null_present,self.cwmv            
+                self.col_with_missing_values = self.cwmv
+                for col in self.col_with_missing_values:
+                    self.df[col]=self.df[col].fillna(self.df[col].mode()[0])
+            return self.df     
         except Exception as e:
                        print("This is the error {}".format(e))
 
-    def impute_missing_values(self,data,cwmv):
-        '''  
+    '''def impute_missing_values(self,data,cwmv):
             MethodName : impute_missing_values
             Operation  : Replaces the missing values in the column with the mode values of the column.
             Returns    : The dataset with no missing values
             onFailure  : Raise Exception
             
-            '''
+            
         try : 
             self.data = data
             self.col_with_missing_val = cwmv
@@ -56,9 +61,23 @@ class Presprocessor:
                 self.data[col]=self.data[col].fillna(self.data[col].mode()[0])
             return self.data
         except Exception as e:
-                       print("This is the error {}".format(e))
+                       print("This is the error {}".format(e))'''
 
-    def split_transform(self,data):
+    def encoding_variables(self,df):
+        self.cat_var = False
+        self.a = list(self.df.select_dtypes(include=['object']).columns)
+        self.cat_var_count = len(self.a) 
+        if self.cat_var_count>0:
+            self.cat_var=True
+        if(self.cat_var):
+            for i in range(len(self.a)):
+                self.ctv.append(self.a[i])
+        self.le = preprocessing.LabelEncoder()
+        for i in self.ctv:
+            self.df[i]=self.le.fit_transform(df[i])
+        return self.df                       
+
+    def split_xy(self,df):
         '''  
             MethodName : split_transform
             Operation  : split the df into x and y also transforms the y feature (categorical) into binary feature.
@@ -67,25 +86,19 @@ class Presprocessor:
             
         '''
         try:
-            self.x = self.data[["ssc_p","hsc_p","degree_p","etest_p"]]
-            print("the X",self.x)
-            self.y = self.data["status"]
-            print("the y",self.y)
-            self.le = LabelEncoder()
-            self.y = self.le.fit_transform(self.y)
-            print(self.data)
-            return self.x,self.y
+            self.x = self.df.drop(columns=["status","sl_no","gender","hsc_s","hsc_b","ssc_b","degree_t","workex","mba_p","salary"])
+            self.y = self.df["status"]
+            self.x_train,self.x_test,self.y_train,self.y_test=train_test_split(self.x,self.y,random_state=40,shuffle=True)
+            return self.x_train,self.x_test,self.y_train,self.y_test 
         except Exception as e:
             print("This is the exception : {}".format(e))
 
-    def train_test(self,x,y):
-        '''  
+    '''  def train_test(self,x,y):
             MethodName : train_test
             Operation  : split the df into train and test 
             Returns    : x_train,x_test,y_train,y_test
-            onFailure  : Raise Exception
-            
-        '''
+            onFailure  : Raise Exception            
+        
         try:
             print(self.data)
             self.x_train,self.x_test,self.y_train,self.y_test=train_test_split(self.x,self.y,random_state=40,shuffle=True)
@@ -93,5 +106,5 @@ class Presprocessor:
             return self.x_train,self.x_test,self.y_train,self.y_test 
         except Exception as e:
             print("This is the exception : {}".format(e))
-    
+    '''
     

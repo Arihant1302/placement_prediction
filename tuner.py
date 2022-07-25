@@ -1,5 +1,3 @@
-from logging import exception
-#from tkinter import EXCEPTION
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from xgboost import XGBClassifier
@@ -8,10 +6,11 @@ import preprocess
 
 
 class models:
-    def __init__(self,data):
-        self.data=data
 
-    def final_processing(self,data):
+    def __init__(self,df):
+        self.df = df
+  
+    def driver(self,df):
         '''
                     MethodName : final_processing
                     Function   : completes all the preprocesing tht is to be done on the dataset.
@@ -19,22 +18,17 @@ class models:
                     onFailure  : Raise Exception
         '''
         try:
-            self.preprocessor = preprocess.Presprocessor(self.data)
-            self.null_val_present,self.cols_with_nul_value = self.preprocessor.is_null_present(self.data)
-            if self.null_val_present:
-                self.data = self.preprocessor.impute_missing_values(self.data,self.cols_with_nul_value)
-                print(" null values removed")
-                print("No. of null value : {}".format(self.data.isnull().sum()))
-                print(self.data)
-            else:
-                return self.data
-            self.x,self.y = self.preprocessor.split_transform(self.data)
-            self.train_x,self.test_x,self.train_y,self.test_y=self.preprocessor.train_test(self.x,self.y)
+            self.preprocessor = preprocess.Presprocessor(self.df)
+            self.df = self.preprocessor.is_null(self.df)
+            self.df = self.preprocessor.encoding_variables(self.df)
+            self.train_x,self.test_x,self.train_y,self.test_y=self.preprocessor.split_xy(self.df)
+            print(self.df)
             return self.train_x,self.test_x,self.train_y,self.test_y
         except Exception as e:
             print("This is the Exception : {} ".format(e))
 
-    def best_model_finder(self,a,b,c,d):
+    def best_model_finder(self,train_x,test_x,train_y,test_y):
+
         '''
                     MethodName : best_model_finder
                     Function   : Split the dataframe and trains the dataframe on XGB and Random forest to find the best model to be used
@@ -50,7 +44,7 @@ class models:
             self.xgb_model = self.xgb.fit(self.train_x,self.train_y)
             self.xgb_pred = self.xgb.predict(self.test_x)
             self.xgb_score = accuracy_score(self.test_y,self.xgb_pred)
-            print(self.data)
+            print(self.df)
             if(self.rf_score < self.xgb_score):
                 with open('model_pkl', 'wb') as files:
                     self.model = pickle.dump(self.xgb, files)
