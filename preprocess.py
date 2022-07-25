@@ -20,8 +20,6 @@ class Presprocessor:
     def __init__(self,df):
         self.df = df
 
-
-
     def is_null(self,data):
         '''
                 Lets check if there are any null values in the dataset

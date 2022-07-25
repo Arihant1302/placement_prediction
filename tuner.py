@@ -5,6 +5,7 @@ import pickle
 import preprocess
 
 
+
 class models:
 
     def __init__(self,df):
@@ -22,7 +23,6 @@ class models:
             self.df = self.preprocessor.is_null(self.df)
             self.df = self.preprocessor.encoding_variables(self.df)
             self.train_x,self.test_x,self.train_y,self.test_y=self.preprocessor.split_xy(self.df)
-            print(self.df)
             return self.train_x,self.test_x,self.train_y,self.test_y
         except Exception as e:
             print("This is the Exception : {} ".format(e))
@@ -44,7 +44,6 @@ class models:
             self.xgb_model = self.xgb.fit(self.train_x,self.train_y)
             self.xgb_pred = self.xgb.predict(self.test_x)
             self.xgb_score = accuracy_score(self.test_y,self.xgb_pred)
-            print(self.df)
             if(self.rf_score < self.xgb_score):
                 with open('model_pkl', 'wb') as files:
                     self.model = pickle.dump(self.xgb, files)
