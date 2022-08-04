@@ -16,7 +16,6 @@ df,cwmv = functions.is_null_sum(df)
 df = functions.impute_missing_values(df,cwmv)
 df,ctv = functions.encoding_variables(df)
 functions.encoder(df,ctv)
-print(df)
 from sklearn.model_selection import train_test_split
 x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=40,shuffle=True)
 rf = RandomForestClassifier()
