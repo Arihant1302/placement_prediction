@@ -9,27 +9,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <body>
-        <form action="/submit" method="POST">
-                <div class="form-group container-sm ">
-                    <label >Enter SSC Score</label>
-                    <input type="number" class="form-control" id="ssc_p" aria-describedby="emailHelp" placeholder="Enter SSC Score">
-                </div>
-                <div class="form-group container-sm">
-                    <label >Enter HSC Score</label>
-                    <input type="number" class="form-control" id="hsc_p" aria-describedby="emailHelp" placeholder="Enter HSC Score">
-                </div>
-                <div class="form-group container-sm">
-                    <label >Enter degree Score</label>
-                    <input type="number" class="form-control" id="deg_p" aria-describedby="emailHelp" placeholder="Enter degree Score">
-                </div>
-                <div  class="form-group container-sm">
-                    <label >Enter etest Score</label>
-                    <input type="number" class="form-control" id="etest_p" aria-describedby="emailHelp" placeholder="Enter etest Score">
-                </div>
-                
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                
-        </form>
+        <div class="form">
+            <form action="/submit" method="POST">
+                    <div class="form-group container-sm ">
+                        <label >Enter SSC Score</label>
+                        <input type="number" class="form-control" id="ssc_p" name="ssc_p" placeholder="Enter SSC Score">
+                    </div>
+                    <div class="form-group container-sm">
+                        <label >Enter HSC Score</label>
+                        <input type="number" class="form-control" id="hsc_p"  name="hsc_p" placeholder="Enter HSC Score">
+                    </div>
+                    <div class="form-group container-sm">
+                        <label >Enter degree Score</label>
+                        <input type="number" class="form-control" id="deg_p" name="deg_p" placeholder="Enter degree Score">
+                    </div>
+                    <div  class="form-group container-sm">
+                        <label >Enter etest Score</label>
+                        <input type="number" class="form-control" id="etest_p" name="etest_p" placeholder="Enter etest Score">
+                    </div>
+                    
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    
+            </form>
+        </div>
     </body>
 </body>
 </html>
