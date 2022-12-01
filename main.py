@@ -1,5 +1,4 @@
-from logging import PlaceHolder
-import modle
+from best_model.best_model_finder import best_model_
 from flask import Flask, render_template, request
 app = Flask(__name__,template_folder='templates')
 
@@ -14,12 +13,8 @@ def submit():
         hsc_s = int(request.form.get("hsc_p"))
         deg_s = int(request.form.get("deg_p"))
         etest_s = int(request.form.get("etest_p"))
-        prediction = modle.placement(ssc_s,hsc_s,deg_s,etest_s)
-        a = []
-        a.append([prediction])
-        for i in a:
-            return "You are " + a[i]
-    return render_template('submit.html')
+        prediction = best_model_.placement_predictor(ssc_s,hsc_s,deg_s,etest_s)
+    return render_template('submit.html',test=prediction)
 
 if __name__ == '__main__':
     app.run(debug=True)
